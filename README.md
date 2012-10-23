@@ -7,10 +7,10 @@ A simple 2D game engine using TypeScript
 How to Compile
 --------------
 
-a. Compiling the engine (stand-alone)
+* Compiling the engine (stand-alone)
 
-   tsc engine/engine.ts -out engine.js
+        tsc engine/engine.ts -out engine.js
 
-b. Compile the sample
+* Compile the sample
 
-   tsc samples/tests/main.ts -out samples/tests/main.js
+        tsc samples/tests/main.ts -out samples/tests/main.js
