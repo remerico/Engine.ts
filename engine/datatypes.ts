@@ -1,6 +1,11 @@
 class Vector2 {
 	constructor (public x : number, public y : number) {}
 
+	add(x : number, y : number) {
+		this.x += x;
+		this.y += y;
+	}
+
 	static zero() {
 		return new Vector2(0, 0);
 	}

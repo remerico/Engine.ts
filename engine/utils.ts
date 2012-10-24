@@ -30,4 +30,12 @@ class Utils {
     	return (0.5 + a) | 0;
     }
 
+    static clamp(v : number, n : number, x : number) {
+  		return Math.min(Math.max(v, n), x);
+	}
+
+	static sign(a) {
+		return (a > 0) ? 1 : (a < 0) ? -1 : 0;
+	}
+
 }

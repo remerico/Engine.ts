@@ -9,9 +9,10 @@ class Backdrop extends GameObject {
 class Ball extends GameObject {
 	date = new Date();
 
-	pos : Vector2 = Vector2.zero();
-	direction : Vector2 = Vector2.zero();
-	speed : number = 200;
+	pos = Vector2.zero();
+	maxSpeed = 250;
+	acceleration = 10;
+	speed = Vector2.zero();
 
 	start() {
 
@@ -20,31 +21,37 @@ class Ball extends GameObject {
 	update() {
 
 		var dt = this.time.deltaTime;
-
-		var v = dt * 10;
+		var targetSpeed = Vector2.zero();
+		var direction = Vector2.zero();
 
 		if (this.input.getKey(Input.KeyCode.UP)) {
-			this.direction.y = Utils.lerp(this.direction.y, -1, v);
+			targetSpeed.y = -this.maxSpeed;
 		}
 		else if (this.input.getKey(Input.KeyCode.DOWN)) {
-			this.direction.y = Utils.lerp(this.direction.y, 1, v);
-		}
-		else {
-			this.direction.y = Utils.lerp(this.direction.y, 0, dt * 2);
+			targetSpeed.y = this.maxSpeed;
 		}
 		
 		if (this.input.getKey(Input.KeyCode.LEFT)) {
-			this.direction.x = Utils.lerp(this.direction.x, -1, v);
+			targetSpeed.x = -this.maxSpeed;
 		}
 		else if (this.input.getKey(Input.KeyCode.RIGHT)) {
-			this.direction.x = Utils.lerp(this.direction.x, 1, v);
-		}
-		else {
-			this.direction.x = Utils.lerp(this.direction.x, 0, dt * 2);
+			targetSpeed.x = this.maxSpeed;
 		}
 
-		this.pos.x += Utils.round(this.direction.x * this.speed * dt);
-		this.pos.y += Utils.round(this.direction.y * this.speed * dt);
+
+		direction = new Vector2(Utils.sign(targetSpeed.x - this.speed.x),
+		                        Utils.sign(targetSpeed.y - this.speed.y));
+
+		this.speed.add(this.acceleration * direction.x, this.acceleration * direction.y);
+
+		if (Utils.sign(targetSpeed.x - this.speed.x) != direction.x)
+		    this.speed.x = targetSpeed.x;
+
+		if (Utils.sign(targetSpeed.y - this.speed.y) != direction.y)
+		    this.speed.y = targetSpeed.y;
+
+		this.pos.x += this.speed.x * dt;
+		this.pos.y += this.speed.y * dt;
 
 	}
 
@@ -56,14 +63,15 @@ class Ball extends GameObject {
 		this.context.font = '30px Arial';
 		this.context.fillText(this.display.mousePos.x + ', ' + this.display.mousePos.y, 10,60);
 
-		this.context.fillText(this.time.deltaTime.toString(), 10,100);
+		//this.context.fillText(this.time.deltaTime.toString(), 10,100);
 		this.context.fillText(this.time.fps.toString(), 10,140);
 
 		//this.context.fillText(this.input.getKey(Input.KeyCode.ENTER) + '', 10,180);
 		//this.context.fillText(this.input.getKeys().toString(), 10,220);
 
-		this.context.fillText(this.pos.x + ', ' + this.pos.y, 10,220);
+		//this.context.fillText(this.direction.x + ', ' + this.direction.y, 10,220);
 
+		//this.context.fillText( + '', 10,260);
 	}
 
 

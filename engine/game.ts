@@ -36,14 +36,14 @@ class Game {
 		if (this._sceneChanged == true) {
 
 			if (this._currentScene) {
-				this._currentScene.destroy();
+				this._currentScene._destroyChildren();
 			}
 
 			this._currentScene = this._nextScene;
 			this._currentScene._setReference(this);
 			
 			if (this._currentScene) {
-				this._currentScene.start();
+				this._currentScene._startChildren();
 			}
 
 			this._sceneChanged = false;
