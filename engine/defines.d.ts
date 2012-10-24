@@ -1,8 +1,3 @@
-interface Vector2 {
-	x : number; 
-	y : number;
-}
-
 
 interface Rect { 
 	x : number; 

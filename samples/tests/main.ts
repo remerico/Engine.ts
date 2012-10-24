@@ -9,8 +9,8 @@ class Backdrop extends GameObject {
 class Ball extends GameObject {
 	date = new Date();
 
-	pos : Vector2 = { x : 0, y : 0 };
-	direction : Vector2 = { x : 0, y : 0 };
+	pos : Vector2 = Vector2.zero();
+	direction : Vector2 = Vector2.zero();
 	speed : number = 200;
 
 	start() {
@@ -18,20 +18,39 @@ class Ball extends GameObject {
 	}
 
 	update() {
-		this.pos.x += this.speed * this.time.deltaTime;
 
-		if ((this.pos.x + 100) > this.display.width()) {
-			if (this.speed > 0) this.speed *= -1;
+		var dt = this.time.deltaTime;
+
+		var v = dt * 10;
+
+		if (this.input.getKey(Input.KeyCode.UP)) {
+			this.direction.y = Utils.lerp(this.direction.y, -1, v);
 		}
-		else if (this.pos.x < -1) {
-			if (this.speed < 0) this.speed *= -1;	
+		else if (this.input.getKey(Input.KeyCode.DOWN)) {
+			this.direction.y = Utils.lerp(this.direction.y, 1, v);
 		}
+		else {
+			this.direction.y = Utils.lerp(this.direction.y, 0, dt * 2);
+		}
+		
+		if (this.input.getKey(Input.KeyCode.LEFT)) {
+			this.direction.x = Utils.lerp(this.direction.x, -1, v);
+		}
+		else if (this.input.getKey(Input.KeyCode.RIGHT)) {
+			this.direction.x = Utils.lerp(this.direction.x, 1, v);
+		}
+		else {
+			this.direction.x = Utils.lerp(this.direction.x, 0, dt * 2);
+		}
+
+		this.pos.x += Utils.round(this.direction.x * this.speed * dt);
+		this.pos.y += Utils.round(this.direction.y * this.speed * dt);
 
 	}
 
 	render() {
 		this.context.fillStyle = '#994082';
-		this.context.fillRect(this.pos.x, 10, 100, 100);
+		this.context.fillRect(this.pos.x, this.pos.y, 100, 100);
 
 		this.context.fillStyle = '#ffffff';
 		this.context.font = '30px Arial';
@@ -39,6 +58,12 @@ class Ball extends GameObject {
 
 		this.context.fillText(this.time.deltaTime.toString(), 10,100);
 		this.context.fillText(this.time.fps.toString(), 10,140);
+
+		//this.context.fillText(this.input.getKey(Input.KeyCode.ENTER) + '', 10,180);
+		//this.context.fillText(this.input.getKeys().toString(), 10,220);
+
+		this.context.fillText(this.pos.x + ', ' + this.pos.y, 10,220);
+
 	}
 
 
@@ -53,5 +78,3 @@ ss.addChild(new Ball());
 var game = new Game('game');
 game.setScene(ss);
 game.start();
-
-

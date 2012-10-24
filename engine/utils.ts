@@ -14,8 +14,20 @@ class Utils {
 	    };
 	}
 
-	static Random(min, max) {
+	static random(min, max) {
 	    return Math.floor(Math.random() * (max - (min - 1))) + min;
 	}
+
+	static lerp(a, b, t) {
+    	return (b - a) * t + a
+    };
+
+    static floor(a : number) {
+    	return 0|(a);
+    }
+
+    static round(a : number) {
+    	return (0.5 + a) | 0;
+    }
 
 }

@@ -1,9 +1,11 @@
 class GameObject {
 
+	// Convenience references to common game classes
 	game : Game;
 	display : Display;
 	context : CanvasContext;
 	time : Time;
+	input : Input;
 	childObjects : GameObject[] = [];
 
 	start() { }
@@ -36,6 +38,7 @@ class GameObject {
 		this.display = game.display;
 		this.context = game.display.context;
 		this.time = game.time;
+		this.input = game.input;
 
 		for (var i in this.childObjects) {
 			this.childObjects[i]._setReference(game);
