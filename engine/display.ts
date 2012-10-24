@@ -3,11 +3,7 @@ class Display {
 	canvas : any;
 	context : CanvasContext;
 
-	onmousemove : any;
-	onmouseclick : any;
-
 	rect : Rect;
-	mousePos : Vector2 = Vector2.zero();
 
 	constructor(canvas : any) {
 
@@ -22,15 +18,6 @@ class Display {
 			width : canvas.width,
 			height : canvas.height
 		};
-
-		// Setup events
-		this.canvas.addEventListener('mousemove', 
-			(ev : any) => {
-			this.mousePos = new Vector2(
-				ev.pageX - this.rect.x,
-				ev.pageY - this.rect.y
-			);
-		});
 
 	}
 

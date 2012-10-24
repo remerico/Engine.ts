@@ -4,6 +4,10 @@ class Input {
 	upKeys : number[] = new Array();
 	keyBuffer : number[] = new Array();
 
+	mousePos : Vector2 = Vector2.zero();
+	mouseStatus : bool = false;
+	mouseDown : bool = false;
+	mouseUp : bool = false;
 
 	// Key codes adapted from:
 	// http://closure-library.googlecode.com/svn/docs/closure_goog_events_keycodes.js.source.html
@@ -126,7 +130,7 @@ class Input {
 		PHANTOM: 255
 	};
 
-	constructor() {
+	constructor(public game : Game) {
 		
 		var input = this;
 		document.addEventListener('keydown', function(e : any) {
@@ -143,6 +147,26 @@ class Input {
 			if (i != -1) input.keyBuffer.splice(i, 1);
 
 			input.upKeys.push(e.keyCode);
+		});
+
+		game.display.canvas.addEventListener('mousemove', 
+			(ev : any) => {
+			this.mousePos = new Vector2(
+				ev.pageX - game.display.rect.x,
+				ev.pageY - game.display.rect.y
+			);
+		});
+
+		game.display.canvas.addEventListener('mousedown', 
+			(ev : any) => {
+			this.mouseDown = true;
+			this.mouseStatus = true;
+		});
+
+		game.display.canvas.addEventListener('mouseup', 
+			(ev : any) => {
+			this.mouseUp = true;
+			this.mouseStatus = false;
 		});
 
 	}
@@ -163,9 +187,24 @@ class Input {
 		return this.upKeys.indexOf(keyCode) != -1;
 	}
 
+	getMouse() : bool {
+		return this.mouseStatus;
+	}
+
+	getMouseDown() : bool {
+		return this.mouseDown;
+	}
+
+	getMouseUp() : bool {
+		return this.mouseUp;
+	}
+
 	consume() {
 		if (this.upKeys.length > 0) this.upKeys.length = 0;
 		if (this.downKeys.length > 0) this.downKeys.length = 0;
+
+		this.mouseDown = false;
+		this.mouseUp = false;
 	}
 	
 }

@@ -21,7 +21,7 @@ class Game {
 		window.addEventListener('load', () => { 
 			this.display = new Display(document.getElementById(this._canvasId));
 			this.time = new Time();
-			this.input = new Input();
+			this.input = new Input(this);
 			this.loaded = true;
 
 			this._runLoop();
